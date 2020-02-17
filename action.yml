@@ -11,6 +11,10 @@ inputs:
     description: "The branch expected by GitHub to have the static files needed for your site."
     required: false
     default: "master"
+  build-args:
+    description: "Additional arguments that get passed to `npm run build`."
+    required: false
+    default: ""
   scully-args:
     description: "Additional arguments that get passed to `npm run scully`."
     required: false

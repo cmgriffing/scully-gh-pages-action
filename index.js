@@ -29,10 +29,14 @@ async function run() {
     console.log("Finished installing dependencies.");
 
     const scullyArgs = core.getInput("scully-args");
+    const buildArgs = core.getInput("build-args");
     console.log("Ready to build your Scully site!");
-    console.log(`Building with: ${pkgManager} run build ${scullyArgs}`);
-    await exec.exec(`${pkgManager} run build`, [scullyArgs]);
+    console.log(`Building with: ${pkgManager} run build ${buildArgs}`);
+    await exec.exec(`${pkgManager} run build`, [buildArgs]);
     console.log("Finished building your site.");
+
+    await exec.exec(`${pkgManager} run scully`, [scullyArgs]);
+    console.log("Finished Scullying your site.");
 
     const cnameExists = await ioUtil.exists("./CNAME");
     if (cnameExists) {
@@ -48,7 +52,6 @@ async function run() {
     console.log(
       "You can configure the deploy branch by setting the `deploy-branch` input for this action."
     );
-    await exec.exec(`ls`, [], { cwd: "./dist/static" });
     await exec.exec(`git init`, [], { cwd: "./dist/static" });
     await exec.exec(`git config user.name`, [github.context.actor], {
       cwd: "./dist/static"
