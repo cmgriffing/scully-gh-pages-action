@@ -1,0 +1,20 @@
+name: "Scully Publish"
+description: "Build and deploy your Scully site to GitHub Pages."
+branding:
+  icon: "book-open"
+  color: "red"
+inputs:
+  access-token:
+    description: "A personal access token needed to push your site after it has been built."
+    required: true
+  deploy-branch:
+    description: "The branch expected by GitHub to have the static files needed for your site."
+    required: false
+    default: "master"
+  scully-args:
+    description: "Additional arguments that get passed to `npm run scully`."
+    required: false
+    default: ""
+runs:
+  using: "node12"
+  main: "index.js"
