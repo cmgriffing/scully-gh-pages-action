@@ -48,24 +48,28 @@ async function run() {
     console.log(
       "You can configure the deploy branch by setting the `deploy-branch` input for this action."
     );
-    await exec.exec(`git init`, [], { cwd: "./dist/static" });
-    await exec.exec(`git config user.name`, [github.context.actor], {
+    await exec.exec(`/usr/bin/git init`, [], { cwd: "./dist/static" });
+    await exec.exec(`/usr/bin/git config user.name`, [github.context.actor], {
       cwd: "./dist/static"
     });
     await exec.exec(
-      `git config user.email`,
+      `/usr/bin/git config user.email`,
       [`${github.context.actor}@users.noreply.github.com`],
       { cwd: "./dist/static" }
     );
-    await exec.exec(`git add`, ["."], { cwd: "./dist/static" });
+    await exec.exec(`/usr/bin/git add`, ["."], { cwd: "./dist/static" });
     await exec.exec(
-      `git commit`,
+      `/usr/bin/git commit`,
       ["-m", `deployed via Scully Publish Action 🎩 for ${github.context.sha}`],
       { cwd: "./dist/static" }
     );
-    await exec.exec(`git push`, ["-f", repoURL, `master:${deployBranch}`], {
-      cwd: "./dist/static"
-    });
+    await exec.exec(
+      `/usr/bin/git push`,
+      ["-f", repoURL, `master:${deployBranch}`],
+      {
+        cwd: "./dist/static"
+      }
+    );
     console.log("Finished deploying your site.");
 
     console.log("Enjoy! ✨");

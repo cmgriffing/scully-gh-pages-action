@@ -1,6 +1,6 @@
 {
   "name": "scully-gh-pages-action",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "GitHub Action to build and deploy your Scully site to GitHub Pages ❤️🎩",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/cmgriffing/scully-gh-pages-action.git"
   },
   "keywords": [
-    "Gatsby",
+    "Scully",
     "GitHub Pages",
     "GitHub Actions"
   ],
