@@ -131,3 +131,7 @@ Have fun building! ✨
 [github-action-input]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#using-encrypted-secrets-in-a-workflow
 [github-pages-domain-docs]: https://help.github.com/en/articles/using-a-custom-domain-with-github-pages
 [github-repo-secret]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets
+
+## Special Thanks
+
+This repo would not have been possible without inspiration and guidance from the fantastic Gatsby-based example here: [https://github.com/enriikke/gatsby-gh-pages-action](https://github.com/enriikke/gatsby-gh-pages-action)
