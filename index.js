@@ -28,14 +28,25 @@ async function run() {
     await exec.exec(`${pkgManager} install`);
     console.log("Finished installing dependencies.");
 
-    const scullyArgs = core.getInput("scully-args");
-    const buildArgs = core.getInput("build-args");
+    let buildArgs = core.getInput("build-args").trim();
+    // Add dashes if a user passes args and doesnt have them.
+    if (buildArgs !== "" && scullyArgs.indexOf("-- ") !== 0) {
+      buildArgs = `-- ${buildArgs}`;
+    }
+
+    let scullyArgs = core.getInput("scully-args").trim();
+    // Remove dashes if the scullyArgs have them
+    //  This is because we now pass --nw by default.
+    if (scullyArgs.indexOf("-- ") === 0) {
+      scullyArgs = scullyArgs.slice(3);
+    }
+
     console.log("Ready to build your Scully site!");
     console.log(`Building with: ${pkgManager} run build ${buildArgs}`);
     await exec.exec(`${pkgManager} run build ${buildArgs}`, []);
     console.log("Finished building your site.");
 
-    await exec.exec(`${pkgManager} run scully ${scullyArgs}`, []);
+    await exec.exec(`${pkgManager} run scully -- --nw ${scullyArgs}`, []);
     console.log("Finished Scullying your site.");
 
     const cnameExists = await ioUtil.exists("./CNAME");
