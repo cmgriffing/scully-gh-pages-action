@@ -3,6 +3,7 @@ const exec = require("@actions/exec");
 const github = require("@actions/github");
 const io = require("@actions/io");
 const ioUtil = require("@actions/io/lib/io-util");
+const { promises: fs } = require('fs')
 
 async function run() {
   try {
@@ -46,7 +47,18 @@ async function run() {
     await exec.exec(`${pkgManager} run build ${buildArgs}`, []);
     console.log("Finished building your site.");
 
-    await exec.exec(`${pkgManager} run scully -- --nw ${scullyArgs}`, []);
+    // determine the scully version
+    const packageJsonRaw = await fs.readFile('./package.json', 'utf8');
+    const packageJsonParsed = JSON.parse(packageJsonRaw);
+    const scullyVersion = packageJsonParsed.dependencies['@scullyio/scully']
+      .replace('^', '')
+      .replace('~', '');
+    // add the `--nw` flag if scully version is below or equal `0.0.85`
+    if (scullyVersion <= '0.0.85') {
+      scullyArgs = `--nw ${scullyArgs}`
+    }
+
+    await exec.exec(`${pkgManager} run scully -- ${scullyArgs}`, []);
     console.log("Finished Scullying your site.");
 
     const cnameExists = await ioUtil.exists("./CNAME");
