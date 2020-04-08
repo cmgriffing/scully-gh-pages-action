@@ -3,6 +3,7 @@ const exec = require("@actions/exec");
 const github = require("@actions/github");
 const io = require("@actions/io");
 const ioUtil = require("@actions/io/lib/io-util");
+const semver = require('semver')
 const { promises: fs } = require('fs')
 
 async function run() {
@@ -50,11 +51,9 @@ async function run() {
     // determine the scully version
     const packageJsonRaw = await fs.readFile('./package.json', 'utf8');
     const packageJsonParsed = JSON.parse(packageJsonRaw);
-    const scullyVersion = packageJsonParsed.dependencies['@scullyio/scully']
-      .replace('^', '')
-      .replace('~', '');
+    const scullyVersion = packageJsonParsed.dependencies['@scullyio/scully'];
     // add the `--nw` flag if scully version is below or equal `0.0.85`
-    if (scullyVersion <= '0.0.85') {
+    if (semver.lte(scullyVersion, '0.0.85')) {
       scullyArgs = `--nw ${scullyArgs}`
     }
 

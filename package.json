@@ -26,5 +26,8 @@
     "@actions/exec": "^1.0.3",
     "@actions/github": "^1.1.0",
     "@actions/io": "^1.0.1"
+  },
+  "devDependencies": {
+    "semver": "^7.2.1"
   }
 }
