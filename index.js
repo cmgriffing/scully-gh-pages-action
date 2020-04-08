@@ -4,6 +4,7 @@ const github = require("@actions/github");
 const io = require("@actions/io");
 const ioUtil = require("@actions/io/lib/io-util");
 const semver = require('semver')
+const lockfile = require('@yarnpkg/lockfile');
 const { promises: fs } = require('fs')
 
 async function run() {
@@ -49,9 +50,20 @@ async function run() {
     console.log("Finished building your site.");
 
     // determine the scully version
-    const packageJsonRaw = await fs.readFile('./package.json', 'utf8');
-    const packageJsonParsed = JSON.parse(packageJsonRaw);
-    const scullyVersion = packageJsonParsed.dependencies['@scullyio/scully'];
+    let scullyVersion;
+    if (pkgManager === 'yarn') {
+      const yarnLockRaw = await fs.readFile('./yarn.lock', 'utf8');
+      const yarnLockParsed = lockfile.parse(yarnLockRaw);
+      // result contains a list with e.g. "@scullyio/scully@^0.0.85" as key, so we have to find teh matching object key
+      const getScullyChildObjectKey = Object.keys(yarnLockParsed.object).filter((package) => /@scullyio\/scully/.test(package));
+      // use the found key to get the version from the object
+      scullyVersion = yarnLockParsed.object[getScullyChildObjectKey].version;
+    } else {
+      const packageJsonRaw = await fs.readFile('./package-lock.json', 'utf8');
+      const packageJsonParsed = JSON.parse(packageJsonRaw);
+      scullyVersion = packageJsonParsed.dependencies['@scullyio/scully'];
+    }
+    
     // add the `--nw` flag if scully version is below or equal `0.0.85`
     if (semver.lte(scullyVersion, '0.0.85')) {
       scullyArgs = `--nw ${scullyArgs}`
