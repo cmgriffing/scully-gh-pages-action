@@ -27,7 +27,7 @@ async function run() {
     }
 
     const pkgManager = (await ioUtil.exists("./yarn.lock")) ? "yarn" : "npm";
-    const installCmd = pkgManager === 'yarn' ? 'install --frozen-lockfile' : 'ci'
+    const installCmd = pkgManager === "yarn" ? "install --frozen-lockfile" : "ci"
     console.log(`Installing your site's dependencies using ${pkgManager}.`);
     await exec.exec(`${pkgManager} ${installCmd}`);
     console.log("Finished installing dependencies.");
