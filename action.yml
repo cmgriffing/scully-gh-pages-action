@@ -22,7 +22,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-node@v2
-      with:
-        node-version: "14"
+    - run: "curl -fsSL https://fnm.vercel.app/install | bash"
+    - run: "fnm install 14 && fnm use 14"
     - run: "node index.js"
