@@ -1,3 +1,0 @@
-# fnm
-export PATH=/home/runner/.fnm:$PATH
-eval "`fnm env`"

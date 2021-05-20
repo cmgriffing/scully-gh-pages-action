@@ -24,7 +24,10 @@ runs:
   steps:
     - run: "curl -fsSL https://fnm.vercel.app/install | bash"
       shell: bash
-    - run: "cat fnm.txt >> /home/runner/.bashrc"
+    - run: |
+        cat "# fnm
+        export PATH=/home/runner/.fnm:$PATH
+        eval \"`fnm env`\"" >> /home/runner/.bashrc
       shell: bash
     - run: "source /home/runner/.bashrc"
       shell: bash
