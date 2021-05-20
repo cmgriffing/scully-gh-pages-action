@@ -2,6 +2,15 @@
 
 GitHub Action to build and deploy your Scully site to GitHub Pages ❤️🎩
 
+## Node Version Differences
+
+As of v10, this action uses Node 14.
+
+If you need Node 12 still, you can use v9:
+[https://github.com/cmgriffing/scully-gh-pages-action/releases/tag/v9](https://github.com/cmgriffing/scully-gh-pages-action/releases/tag/v9)
+
+If we end up needing to backport features beforethe EOL of Node 12, we can. It may just need a new naming convention for versioning.
+
 ## Usage
 
 This GitHub Action will run `npm run build --prod && npm run scully` at the root of your repository and
