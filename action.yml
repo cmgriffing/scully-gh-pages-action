@@ -20,5 +20,9 @@ inputs:
     required: false
     default: ""
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: composite
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: "node index.js"
