@@ -20,5 +20,6 @@ inputs:
     required: false
     default: ""
 runs:
-  using: "node14"
+  using: "docker"
+  image: "Dockerfile"
   main: "index.js"
