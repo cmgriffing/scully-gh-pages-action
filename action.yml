@@ -22,13 +22,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: "curl -fsSL https://fnm.vercel.app/install | bash"
-      shell: bash
-    - run: export PATH=/home/runner/.fnm:$PATH
-      shell: bash
-    - run: eval \"`fnm env`\"
-      shell: bash
-    - run: "fnm install 14 && fnm use 14"
-      shell: bash
-    - run: "node index.js"
+    - run: |
+        curl -fsSL https://fnm.vercel.app/install | bash &&
+        eval \"`/home/runner/.fnm/fnm env`\" &&
+        /home/runner/.fnm/fnm install 14 &&
+        /home/runner/.fnm/fnm use 14 &&
+        node index.js
       shell: bash
