@@ -4,7 +4,7 @@ GitHub Action to build and deploy your Scully site to GitHub Pages ❤️🎩
 
 ## Node Version
 
-As of Angular 12, you will need Node 14.
+As of Angular 12, you will need to explicitly set you Node version since the `node12` within Github actions is outdated.
 
 You can set it as your node version using [setup-node](https://github.com/actions/setup-node):
 
