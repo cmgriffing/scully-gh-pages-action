@@ -20,12 +20,5 @@ inputs:
     required: false
     default: ""
 runs:
-  using: composite
-  steps:
-    - run: |
-        curl -fsSL https://fnm.vercel.app/install | bash &&
-        eval \"`/home/runner/.fnm/fnm env`\" &&
-        /home/runner/.fnm/fnm install 14 &&
-        /home/runner/.fnm/fnm use 14 &&
-        node index.js
-      shell: bash
+  using: "node12"
+  main: "index.js"

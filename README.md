@@ -2,14 +2,25 @@
 
 GitHub Action to build and deploy your Scully site to GitHub Pages ❤️🎩
 
-## Node Version Differences
+## Node Version
 
-As of v10, this action uses Node 14.
+As of Angular 12, you will need Node 14.
 
-If you need Node 12 still, you can use v9:
-[https://github.com/cmgriffing/scully-gh-pages-action/releases/tag/v9](https://github.com/cmgriffing/scully-gh-pages-action/releases/tag/v9)
+You can set it as your node version using [setup-node](https://github.com/actions/setup-node):
 
-If we end up needing to backport features beforethe EOL of Node 12, we can. It may just need a new naming convention for versioning.
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - uses: cmgriffing/scully-gh-pages-action@v9
+        with:
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+```
 
 ## Usage
 
@@ -29,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: cmgriffing/scully-gh-pages-action@v10
+      - uses: cmgriffing/scully-gh-pages-action@v9
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
 ```
