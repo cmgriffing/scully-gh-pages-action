@@ -4,7 +4,9 @@
   "description": "GitHub Action to build and deploy your Scully site to GitHub Pages ❤️🎩",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --noEmit && ncc build index.ts -o dist -m",
+    "test": "tsc --noEmit && jest --silent",
+    "lint": "eslint . --ext .ts"
   },
   "repository": {
     "type": "git",
@@ -25,10 +27,24 @@
     "@actions/core": "^1.6.0",
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
-    "@actions/io": "^1.1.1"
+    "@actions/io": "^1.1.1",
+    "@yarnpkg/lockfile": "1.1.0",
+    "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@yarnpkg/lockfile": "^1.1.0",
-    "semver": "^7.3.5"
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.12",
+    "@types/semver": "^7.3.9",
+    "@types/yarnpkg__lockfile": "^1.1.5",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "@zeit/ncc": "^0.22.3",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.4.4",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.1",
+    "typescript": "^4.5.3"
   }
 }
