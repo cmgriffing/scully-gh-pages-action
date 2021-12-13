@@ -67,7 +67,7 @@ async function run() {
       scullyVersion = packageLockJsonParsed.dependencies['@scullyio/scully'].version;
     }
     console.log(`Scully Version ${scullyVersion} is used`);
-    
+
     // add the `--nw` flag if scully version is below or equal `0.0.85`
     if (semver.lte(scullyVersion, '0.0.85')) {
       console.log(`Scully Version is less then '0.0.85', adding '--nw' flag`);
@@ -112,6 +112,7 @@ async function run() {
     console.log("Finished deploying your site.");
 
     console.log("Enjoy! ✨");
+    core.setOutput('ssuccess')
   } catch (error) {
     core.setFailed(error.message);
   }
