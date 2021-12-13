@@ -5,9 +5,9 @@ const io = require("@actions/io");
 const ioUtil = require("@actions/io/lib/io-util");
 const semver = require('semver')
 const lockfile = require('@yarnpkg/lockfile');
-const { promises: fs } = require('fs')
+const fs = require('fs')
 
-async function run() {
+(async () => {
   try {
     const accessToken = core.getInput("access-token");
     if (!accessToken) {
@@ -112,10 +112,9 @@ async function run() {
     console.log("Finished deploying your site.");
 
     console.log("Enjoy! ✨");
-    core.setOutput('ssuccess')
+    core.setOutput('ssuccess');
   } catch (error) {
     core.setFailed(error.message);
   }
-}
+})();
 
-run();
