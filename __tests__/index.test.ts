@@ -26,8 +26,8 @@ beforeAll(() => {
 
   jest.spyOn(github.context, 'repo', 'get').mockImplementation(() => {
     return {
-      owner: 'enriikke',
-      repo: 'enriikke.github.io',
+      owner: 'foo',
+      repo: 'foo.github.io',
     };
   });
 
@@ -53,7 +53,6 @@ beforeEach(() => {
   jest.resetModules();
   inputs = {
     'access-token': 'SECRET',
-    'skip-publish': 'true',
   };
 });
 
@@ -76,19 +75,21 @@ describe('scully Publish action', () => {
     await expect(run()).resolves.not.toThrowError();
   });
 
-  it('calls scully build without args', async () => {
+  it('calls angular build without args', async () => {
+    inputs['build-args'] = '';
     inputs['scully-args'] = '';
 
     await run();
 
-    expect(execSpy).toBeCalledWith('yarn run build', []);
+    expect(execSpy).toHaveBeenLastCalledWith('yarn run build ', []);
   });
 
-  it('calls scully build with args', async () => {
-    inputs['scully-args'] = '--prefix-paths --no-uglify';
+  it('calls angular build with args', async () => {
+    inputs['build-args'] = '--prefix-paths --no-uglify';
+    inputs['scully-args'] = '';
 
     await run();
 
-    expect(execSpy).toBeCalledWith('yarn run build', ['--', '--prefix-paths', '--no-uglify']);
+    expect(execSpy).toHaveBeenLastCalledWith('yarn run build -- --prefix-paths --no-uglify', []);
   });
 });
