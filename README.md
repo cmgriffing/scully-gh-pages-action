@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
       - uses: cmgriffing/scully-gh-pages-action@v9
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
@@ -46,7 +46,7 @@ jobs:
 ```
 
 > **NOTE:** In order to support `npm` and `yarn`, this Action relies on having a
-> `build` script defined in your `package.json` file. Angular automatically creates one for you when you create a project via Angular-cli.
+> `build` script defined in your `package.json` file. Angular automatically creates one for you when you create a project via Angular CLI.
 
 ### Knobs & Handles
 
