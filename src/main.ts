@@ -3,9 +3,7 @@ import * as exec from '@actions/exec'
 import * as github from '@actions/github'
 import * as io from '@actions/io'
 import * as ioUtil from '@actions/io/lib/io-util'
-import * as lockfile from '@yarnpkg/lockfile'
-import { readFileSync } from 'fs'
-import * as semver from 'semver'
+import { executeScully } from './scully'
 
 const DEFAULT_DEPLOY_BRANCH = 'master'
 
@@ -47,48 +45,12 @@ export async function run(): Promise<void> {
       buildArgs = `-- ${buildArgs}`
     }
 
-    let scullyArgs = core.getInput('scully-args')?.trim() || ''
-    // Remove dashes if the scullyArgs have them
-    //  This is because we now pass --nw by default.
-    if (scullyArgs.startsWith('-- ')) {
-      scullyArgs = scullyArgs.slice(3)
-    }
-
     console.log('Ready to build your Scully site!')
     console.log(`Building with: ${pkgManager} run build ${buildArgs}`)
     await exec.exec(`${pkgManager} run build ${buildArgs}`.trim(), [])
     console.log('Finished building your site.')
 
-    // determine the scully version
-    let scullyVersion
-    if (pkgManager === 'yarn') {
-      console.log("Determine Scully version from './yarn.lock'.")
-      const yarnLockRaw = readFileSync('./yarn.lock', 'utf8')
-      const yarnLockParsed = lockfile.parse(yarnLockRaw)
-      // result contains a list with e.g. "@scullyio/scully@^0.0.85" as key, so we have to find teh matching object key
-      const getScullyChildObjectKey = Object.keys(yarnLockParsed.object).filter(
-        // eslint-disable-next-line @typescript-eslint/prefer-includes
-        (p: string) => /@scullyio\/scully/.test(p)
-      )
-      // use the found key to get the version from the object
-      scullyVersion = yarnLockParsed.object[getScullyChildObjectKey[0]].version
-    } else {
-      console.log("Determine Scully version from './package-lock.json'.")
-      const packageLockJsonRaw = readFileSync('./package-lock.json', 'utf8')
-      const packageLockJsonParsed = JSON.parse(packageLockJsonRaw)
-      scullyVersion =
-        packageLockJsonParsed.dependencies['@scullyio/scully'].version
-    }
-    console.log(`Scully Version ${scullyVersion} is used`)
-
-    // add the `--nw` flag if scully version is below or equal `0.0.85`
-    if (semver.lte(scullyVersion, '0.0.85')) {
-      console.log(`Scully Version is less then '0.0.85', adding '--nw' flag`)
-      scullyArgs = `--nw ${scullyArgs}`
-    }
-
-    await exec.exec(`${pkgManager} run scully -- ${scullyArgs}`.trim(), [])
-    console.log('Finished Scullying your site.')
+    executeScully(pkgManager)
 
     const cnameExists = await ioUtil.exists('./CNAME')
     if (cnameExists) {
