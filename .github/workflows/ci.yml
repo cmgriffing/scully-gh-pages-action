@@ -42,3 +42,5 @@ jobs:
       - name: Test
         id: npm-ci-test
         run: mkdir -p dist/static && npm run ci-test
+        env:
+          NODE_ENV: test
