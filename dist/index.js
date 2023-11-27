@@ -33000,10 +33000,10 @@ exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const ioUtil = __importStar(__nccwpck_require__(1962));
-const scully_1 = __nccwpck_require__(9354);
 const build_1 = __nccwpck_require__(6793);
-const install_1 = __nccwpck_require__(1649);
 const deploy_1 = __nccwpck_require__(5930);
+const install_1 = __nccwpck_require__(1649);
+const scully_1 = __nccwpck_require__(9354);
 const DEFAULT_DEPLOY_BRANCH = 'master';
 async function run() {
     try {
