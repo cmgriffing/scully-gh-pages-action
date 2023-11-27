@@ -4,8 +4,8 @@ import * as github from '@actions/github';
 import * as io from '@actions/io';
 import * as ioUtil from '@actions/io/lib/io-util';
 import * as lockfile from '@yarnpkg/lockfile';
-import semver from 'semver';
 import { readFileSync } from 'fs';
+import semver from 'semver';
 
 const DEFAULT_DEPLOY_BRANCH = 'master';
 
@@ -30,8 +30,12 @@ async function run(): Promise<void> {
 
     const pkgManager = (await ioUtil.exists('./yarn.lock')) ? 'yarn' : 'npm';
     const installCmd = pkgManager === 'yarn' ? 'install --frozen-lockfile' : 'ci';
+    let installArgs = core.getInput('install-args').trim() || '';
+    if (installArgs) {
+      installArgs = installArgs.startsWith('--') ? installArgs : '--' + installArgs;
+    }
     console.log(`Installing your site's dependencies using ${pkgManager}.`);
-    await exec.exec(`${pkgManager} ${installCmd}`);
+    await exec.exec(`${pkgManager} ${installCmd} ${installArgs}`.trim());
     console.log('Finished installing dependencies.');
 
     let buildArgs = core.getInput('build-args').trim();
@@ -49,7 +53,7 @@ async function run(): Promise<void> {
 
     console.log('Ready to build your Scully site!');
     console.log(`Building with: ${pkgManager} run build ${buildArgs}`);
-    await exec.exec(`${pkgManager} run build ${buildArgs}`, []);
+    await exec.exec(`${pkgManager} run build ${buildArgs}`.trim(), []);
     console.log('Finished building your site.');
 
     // determine the scully version
@@ -78,7 +82,7 @@ async function run(): Promise<void> {
       scullyArgs = `--nw ${scullyArgs}`;
     }
 
-    await exec.exec(`${pkgManager} run scully -- ${scullyArgs}`, []);
+    await exec.exec(`${pkgManager} run scully -- ${scullyArgs}`.trim(), []);
     console.log('Finished Scullying your site.');
 
     const cnameExists = await ioUtil.exists('./CNAME');

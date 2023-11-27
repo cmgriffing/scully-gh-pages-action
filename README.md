@@ -64,6 +64,10 @@ configuration options:
   [input][github-action-input].
   Defaults to `master`.
 
+- **install-args**: Additional arguments that get passed to `npm ci` (e. g. `--legacy-peer-deps`).
+  Provided as an [input][github-action-input].
+  Defaults to nothing.
+
 - **build-args**: Additional arguments that get passed to `npm run build`. See the
   [Angular documentation][angular-build-docs] for a list of allowed options.
   Provided as an [input][github-action-input].
