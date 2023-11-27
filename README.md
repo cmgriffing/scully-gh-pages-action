@@ -39,7 +39,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - uses: cmgriffing/scully-gh-pages-action@v11
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
