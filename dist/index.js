@@ -32897,10 +32897,10 @@ async function run() {
             return;
         }
         const pkgManager = (await ioUtil.exists('./yarn.lock')) ? 'yarn' : 'npm';
-        (0, install_1.installDependencies)(pkgManager);
-        (0, build_1.buildSite)(pkgManager);
-        (0, scully_1.executeScully)(pkgManager);
-        (0, deploy_1.deploy)(accessToken, deployBranch, github.context);
+        await (0, install_1.installDependencies)(pkgManager);
+        await (0, build_1.buildSite)(pkgManager);
+        await (0, scully_1.executeScully)(pkgManager);
+        await (0, deploy_1.deploy)(accessToken, deployBranch, github.context);
         console.log('Enjoy! ✨');
         core.setOutput('success', true);
     }

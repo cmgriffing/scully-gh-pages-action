@@ -30,10 +30,10 @@ export async function run(): Promise<void> {
 
     const pkgManager = (await ioUtil.exists('./yarn.lock')) ? 'yarn' : 'npm';
 
-    installDependencies(pkgManager);
-    buildSite(pkgManager);
-    executeScully(pkgManager);
-    deploy(accessToken, deployBranch, github.context);
+    await installDependencies(pkgManager);
+    await buildSite(pkgManager);
+    await executeScully(pkgManager);
+    await deploy(accessToken, deployBranch, github.context);
 
     console.log('Enjoy! ✨');
     core.setOutput('success', true);
