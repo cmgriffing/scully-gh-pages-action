@@ -16,8 +16,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
         with:
-          node-version: "16"
-      - uses: cmgriffing/scully-gh-pages-action@v10
+          node-version: "20"
+      - uses: cmgriffing/scully-gh-pages-action@v11
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
 ```
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: cmgriffing/scully-gh-pages-action@v10
+      - uses: cmgriffing/scully-gh-pages-action@v11
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
 ```
