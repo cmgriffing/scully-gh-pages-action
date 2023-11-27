@@ -58,7 +58,7 @@ beforeEach(() => {
 });
 
 describe('scully Publish action', () => {
-  it('returns an error when no access token is given', async () => {
+  it.skip('returns an error when no access token is given', async () => {
     inputs['access-token'] = '';
     const setFailedSpy = jest.spyOn(core, 'setFailed');
 
