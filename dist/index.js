@@ -32803,6 +32803,170 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 6793:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.buildSite = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
+async function buildSite(pkgManager) {
+    let buildArgs = core.getInput('build-args')?.trim() || '';
+    // Add dashes if a user passes args and doesnt have them.
+    if (buildArgs !== '' && !buildArgs.startsWith('-- ')) {
+        buildArgs = `-- ${buildArgs}`;
+    }
+    console.log('Ready to build your Scully site!');
+    console.log(`Building with: ${pkgManager} run build ${buildArgs}`);
+    await exec.exec(`${pkgManager} run build ${buildArgs}`.trim(), []);
+    console.log('Finished building your site.');
+}
+exports.buildSite = buildSite;
+
+
+/***/ }),
+
+/***/ 5930:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.deploy = void 0;
+const exec = __importStar(__nccwpck_require__(1514));
+const github = __importStar(__nccwpck_require__(5438));
+const io = __importStar(__nccwpck_require__(7436));
+const ioUtil = __importStar(__nccwpck_require__(1962));
+async function deploy(accessToken, deployBranch, context) {
+    const cnameExists = await ioUtil.exists('./CNAME');
+    if (cnameExists) {
+        console.log('Copying CNAME over.');
+        await io.cp('./CNAME', './dist/static/CNAME', { force: true });
+        console.log('Finished copying CNAME.');
+    }
+    const repo = `${context.repo.owner}/${context.repo.repo}`;
+    const repoURL = `https://${accessToken}@github.com/${repo}.git`;
+    console.log('Ready to deploy your new shiny site!');
+    console.log(`Deploying to repo: ${repo} and branch: ${deployBranch}`);
+    console.log('You can configure the deploy branch by setting the `deploy-branch` input for this action.');
+    await exec.exec(`git init`, [], { cwd: './dist/static' });
+    await exec.exec(`git config user.name`, [github.context.actor], {
+        cwd: './dist/static'
+    });
+    await exec.exec(`git config user.email`, [`${github.context.actor}@users.noreply.github.com`], {
+        cwd: './dist/static'
+    });
+    await exec.exec(`git add`, ['.'], { cwd: './dist/static' });
+    await exec.exec(`git commit`, ['-m', `deployed via Scully Publish Action 🎩 for ${github.context.sha}`], {
+        cwd: './dist/static'
+    });
+    await exec.exec(`git push`, ['-f', repoURL, `master:${deployBranch}`], {
+        cwd: './dist/static'
+    });
+    console.log('Finished deploying your site.');
+}
+exports.deploy = deploy;
+
+
+/***/ }),
+
+/***/ 1649:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.installDependencies = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
+async function installDependencies(pkgManager) {
+    const installCmd = pkgManager === 'yarn' ? 'install --frozen-lockfile' : 'ci';
+    let installArgs = core.getInput('install-args')?.trim() || '';
+    if (installArgs) {
+        installArgs = installArgs.startsWith('--')
+            ? installArgs
+            : `-- ${installArgs}`;
+    }
+    console.log(`Installing your site's dependencies using ${pkgManager}.`);
+    await exec.exec(`${pkgManager} ${installCmd} ${installArgs}`.trim());
+    console.log('Finished installing dependencies.');
+}
+exports.installDependencies = installDependencies;
+
+
+/***/ }),
+
 /***/ 399:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -32834,11 +32998,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
-const exec = __importStar(__nccwpck_require__(1514));
 const github = __importStar(__nccwpck_require__(5438));
-const io = __importStar(__nccwpck_require__(7436));
 const ioUtil = __importStar(__nccwpck_require__(1962));
 const scully_1 = __nccwpck_require__(9354);
+const build_1 = __nccwpck_require__(6793);
+const install_1 = __nccwpck_require__(1649);
+const deploy_1 = __nccwpck_require__(5930);
 const DEFAULT_DEPLOY_BRANCH = 'master';
 async function run() {
     try {
@@ -32856,52 +33021,10 @@ async function run() {
             return;
         }
         const pkgManager = (await ioUtil.exists('./yarn.lock')) ? 'yarn' : 'npm';
-        const installCmd = pkgManager === 'yarn' ? 'install --frozen-lockfile' : 'ci';
-        let installArgs = core.getInput('install-args')?.trim() || '';
-        if (installArgs) {
-            installArgs = installArgs.startsWith('--')
-                ? installArgs
-                : `-- ${installArgs}`;
-        }
-        console.log(`Installing your site's dependencies using ${pkgManager}.`);
-        await exec.exec(`${pkgManager} ${installCmd} ${installArgs}`.trim());
-        console.log('Finished installing dependencies.');
-        let buildArgs = core.getInput('build-args')?.trim() || '';
-        // Add dashes if a user passes args and doesnt have them.
-        if (buildArgs !== '' && !buildArgs.startsWith('-- ')) {
-            buildArgs = `-- ${buildArgs}`;
-        }
-        console.log('Ready to build your Scully site!');
-        console.log(`Building with: ${pkgManager} run build ${buildArgs}`);
-        await exec.exec(`${pkgManager} run build ${buildArgs}`.trim(), []);
-        console.log('Finished building your site.');
+        (0, install_1.installDependencies)(pkgManager);
+        (0, build_1.buildSite)(pkgManager);
         (0, scully_1.executeScully)(pkgManager);
-        const cnameExists = await ioUtil.exists('./CNAME');
-        if (cnameExists) {
-            console.log('Copying CNAME over.');
-            await io.cp('./CNAME', './dist/static/CNAME', { force: true });
-            console.log('Finished copying CNAME.');
-        }
-        const repo = `${github.context.repo.owner}/${github.context.repo.repo}`;
-        const repoURL = `https://${accessToken}@github.com/${repo}.git`;
-        console.log('Ready to deploy your new shiny site!');
-        console.log(`Deploying to repo: ${repo} and branch: ${deployBranch}`);
-        console.log('You can configure the deploy branch by setting the `deploy-branch` input for this action.');
-        await exec.exec(`git init`, [], { cwd: './dist/static' });
-        await exec.exec(`git config user.name`, [github.context.actor], {
-            cwd: './dist/static'
-        });
-        await exec.exec(`git config user.email`, [`${github.context.actor}@users.noreply.github.com`], {
-            cwd: './dist/static'
-        });
-        await exec.exec(`git add`, ['.'], { cwd: './dist/static' });
-        await exec.exec(`git commit`, ['-m', `deployed via Scully Publish Action 🎩 for ${github.context.sha}`], {
-            cwd: './dist/static'
-        });
-        await exec.exec(`git push`, ['-f', repoURL, `master:${deployBranch}`], {
-            cwd: './dist/static'
-        });
-        console.log('Finished deploying your site.');
+        (0, deploy_1.deploy)(accessToken, deployBranch, github.context);
         console.log('Enjoy! ✨');
         core.setOutput('success', true);
     }
