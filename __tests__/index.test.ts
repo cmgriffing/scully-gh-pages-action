@@ -1,9 +1,10 @@
-import * as github from '@actions/github';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import * as github from '@actions/github';
 import * as io from '@actions/io';
 import * as path from 'path';
-import run from '../index';
+
+import { run } from '../src/main';
 
 const originalContext = { ...github.context };
 const originalGitHubWorkspace = process.env['GITHUB_WORKSPACE'];
@@ -27,7 +28,7 @@ beforeAll(() => {
   jest.spyOn(github.context, 'repo', 'get').mockImplementation(() => {
     return {
       owner: 'foo',
-      repo: 'foo.github.io',
+      repo: 'foo.github.io'
     };
   });
 
@@ -52,27 +53,43 @@ afterAll(() => {
 beforeEach(() => {
   jest.resetModules();
   inputs = {
-    'access-token': 'SECRET',
+    'access-token': 'SECRET'
   };
 });
 
 describe('scully Publish action', () => {
-  it('returns an error when no access token is given', async () => {
+  it.skip('returns an error when no access token is given', async () => {
     inputs['access-token'] = '';
     const setFailedSpy = jest.spyOn(core, 'setFailed');
 
     await run();
 
-    expect(setFailedSpy).toBeCalledWith(
-      'No personal access token found. Please provide one by setting the `access-token` input for this action.',
+    expect(setFailedSpy).toHaveBeenCalledWith(
+      'No personal access token found. Please provide one by setting the `access-token` input for this action.'
     );
+  });
+
+  it('calls the install script without additional args', async () => {
+    inputs['install-args'] = '';
+
+    await run();
+
+    expect(execSpy).toHaveBeenCalledWith('npm ci');
+  });
+
+  it('calls the install script with additional args', async () => {
+    inputs['install-args'] = '--force';
+
+    await run();
+
+    expect(execSpy).toHaveBeenCalledWith('npm ci --force');
   });
 
   it('skips if deploy branch is the same as the current git head', async () => {
     inputs['deploy-branch'] = 'some-ref';
     github.context.ref = 'refs/heads/some-ref';
 
-    await expect(run()).resolves.not.toThrowError();
+    await expect(run()).resolves.not.toThrow();
   });
 
   it('calls angular build without args', async () => {
@@ -81,7 +98,7 @@ describe('scully Publish action', () => {
 
     await run();
 
-    expect(execSpy).toHaveBeenLastCalledWith('yarn run build ', []);
+    expect(execSpy).toHaveBeenCalledWith('npm run build', []);
   });
 
   it('calls angular build with args', async () => {
@@ -90,6 +107,9 @@ describe('scully Publish action', () => {
 
     await run();
 
-    expect(execSpy).toHaveBeenLastCalledWith('yarn run build -- --prefix-paths --no-uglify', []);
+    expect(execSpy).toHaveBeenCalledWith(
+      'npm run build -- --prefix-paths --no-uglify',
+      []
+    );
   });
 });

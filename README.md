@@ -16,8 +16,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
         with:
-          node-version: "16"
-      - uses: cmgriffing/scully-gh-pages-action@v10
+          node-version: "20"
+      - uses: cmgriffing/scully-gh-pages-action@v11
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
 ```
@@ -39,8 +39,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: cmgriffing/scully-gh-pages-action@v10
+      - uses: actions/checkout@v4
+      - uses: cmgriffing/scully-gh-pages-action@v11
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
 ```
@@ -63,6 +63,10 @@ configuration options:
   This is where the output of `npm run scully` will be pushed to. Provided as an
   [input][github-action-input].
   Defaults to `master`.
+
+- **install-args**: Additional arguments that get passed to `npm ci` (e. g. `--legacy-peer-deps`).
+  Provided as an [input][github-action-input].
+  Defaults to nothing.
 
 - **build-args**: Additional arguments that get passed to `npm run build`. See the
   [Angular documentation][angular-build-docs] for a list of allowed options.

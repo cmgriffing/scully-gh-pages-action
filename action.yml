@@ -11,6 +11,10 @@ inputs:
     description: "The branch expected by GitHub to have the static files needed for your site."
     required: false
     default: "master"
+  install-args:
+    description: "Additional arguments that get passed to `npm ci` (e. g. `--legacy-peer-deps`)."
+    required: false
+    default: ""
   build-args:
     description: "Additional arguments that get passed to `npm run build`."
     required: false
@@ -20,5 +24,5 @@ inputs:
     required: false
     default: ""
 runs:
-  using: "node16"
-  main: "./dist/index.js"
+  using: node20
+  main: dist/index.js

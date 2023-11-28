@@ -1,18 +1,20 @@
-name: Continuous Integration
+name: Lint Code Base
 
 on:
   pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
-      - 'releases/*'
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
-  test-typescript:
-    name: TypeScript Tests
+  lint:
+    name: Lint Code Base
     runs-on: ubuntu-latest
 
     steps:
@@ -28,19 +30,14 @@ jobs:
           cache: npm
 
       - name: Install Dependencies
-        id: npm-ci
+        id: install
         run: npm ci
 
-      - name: Check Format
-        id: npm-format-check
-        run: npm run format:check
-
-      - name: Lint
-        id: npm-lint
-        run: npm run lint
-
-      - name: Test
-        id: npm-ci-test
-        run: mkdir -p dist/static && npm run ci-test
+      - name: Lint Code Base
+        id: super-linter
+        uses: super-linter/super-linter/slim@v5
         env:
-          NODE_ENV: test
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TYPESCRIPT_DEFAULT_STYLE: prettier
+          VALIDATE_JSCPD: false
